@@ -70,16 +70,24 @@ type restaurant {
   id: Int
   name: String
   description: String
-  dishes:[Dish]
+  dishes:[Dish] 
 }
 type Dish{
   name: String
   price: Int
 }
 input restaurantInput{
+  id: Int
   name: String
   description: String
+  dishes: [inputDish]
 }
+
+input inputDish{
+  name: String
+  price: Int
+}
+
 type DeleteResponse{
   ok: Boolean!
 }
@@ -95,7 +103,7 @@ var root = {
   restaurant: (arg) => restaurants[arg.id],
   restaurants: () => restaurants,
   setrestaurant: ({ input }) => {
-    restaurants.push({ name: input.name, email: input.email, age: input.age });
+    restaurants.push({ id: input.id, name: input.name, email: input.email, age: input.age, dishes: input.inputDish});
     return input;
   },
   deleterestaurant: ({ id }) => {
@@ -128,4 +136,5 @@ app.use(
 var port = 5500;
 app.listen(5500, () => console.log("Running Graphql on Port:" + port));
 
-export default root;
+exports.schema = root;
+
